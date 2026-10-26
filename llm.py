@@ -15,20 +15,17 @@ def get_llm():
     if not api_key:
         return None
 
-    try:
-        from langchain_openai import ChatOpenAI
-        from pydantic import SecretStr
+    from langchain_openai import ChatOpenAI
+    from pydantic import SecretStr
 
-        base_url = None
-        if os.getenv("GROQ_API_KEY"):
-            base_url = "https://api.groq.com/openai/v1"
+    base_url = None
+    if os.getenv("GROQ_API_KEY"):
+        base_url = "https://api.groq.com/openai/v1"
 
-        model_name = os.getenv("MODEL_NAME", "llama-3.3-70b-versatile")
-        return ChatOpenAI(
-            model=model_name,
-            api_key=SecretStr(api_key),
-            base_url=base_url,
-            temperature=0,
-        )
-    except Exception:
-        return None
+    model_name = os.getenv("MODEL_NAME", "llama-3.3-70b-versatile")
+    return ChatOpenAI(
+        model=model_name,
+        api_key=SecretStr(api_key),
+        base_url=base_url,
+        temperature=0,
+    )
