@@ -1,0 +1,24 @@
+#!/bin/sh
+set -eu
+
+repo_root=$(git rev-parse --show-toplevel)
+cd "$repo_root"
+
+if [ -x "venv/bin/python" ]; then
+    python="venv/bin/python"
+elif [ -x "venv/Scripts/python.exe" ]; then
+    python="venv/Scripts/python.exe"
+else
+    python="${PYTHON:-python3}"
+fi
+
+if ! command -v "$python" >/dev/null 2>&1 && [ ! -x "$python" ]; then
+    printf 'Pre-commit: Python interpreter not found: %s\n' "$python" >&2
+    exit 1
+fi
+
+printf 'Pre-commit: running unit tests...\n'
+"$python" -m unittest discover -v
+
+printf '\nPre-commit: running triage checks...\n'
+"$python" triage_check.py

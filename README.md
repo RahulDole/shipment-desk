@@ -32,6 +32,18 @@ The pipeline's four end-to-end triage scenarios can be checked separately:
 python triage_check.py
 ```
 
+## Pre-commit hook
+
+Enable the repository's hook once per clone:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+The hook runs the full unit test suite and `triage_check.py` before each commit.
+If either command fails, Git rejects the commit. It uses `venv` when available,
+otherwise `python3` (or the interpreter set in `PYTHON`).
+
 ## What to do
 
 Read `Problem_Statement_and_Milestones.md` (in the project root, one level
@@ -46,9 +58,9 @@ up) for the full problem statement and the asks. In short:
    Summary that names the costliest category, not just a flat recap.
 4. Check your pipeline actually works:
 
-```bash
-python triage_check.py
-```
+    ```bash
+    python triage_check.py
+    ```
 
 5. `app.py` -- wrap it all in the (mandatory) Gradio interface.
 
